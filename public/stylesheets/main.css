@@ -1,0 +1,12 @@
+body { color:black; }
+body, p, label { font-size:15px; }
+.screenshot { background-color:#D0E7EF; padding: 10px}
+.navbar-fixed-top, .navbar-fixed-bottom { position:relative; }
+.navbar-fixed-top .navbar-inner { padding-left:20px; }
+.navbar .nav > li > a { color:#bbb; }
+table { border-collapse: collapse; width:100%; position:relative; padding: 20px; }
+td { text-align:left; padding: 0.3em 0; border-bottom: 1px solid white;
+    vertical-align:top; }
+tr:hover td, tr:focus td { background-color:white; }
+tr:focus { outline:0; }
+td .label { position:absolute; right:0; }
