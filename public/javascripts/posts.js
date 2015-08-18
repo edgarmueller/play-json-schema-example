@@ -33,7 +33,11 @@ angular.module('app', ['ngResource', 'ngRoute'])
             Post.update({_id: $scope.post._id}, $scope.post);
           } else {
             $scope.post.$save().then(function(response) {
+              $scope.alert = undefined;
               $scope.posts.push(response)
+            }, function(error) {
+              $scope.alert = error;
+              console.log("Error occurred : " + JSON.stringify(error));
             });
           }
           $scope.editing = false;

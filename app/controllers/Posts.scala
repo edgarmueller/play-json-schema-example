@@ -1,24 +1,24 @@
 package controllers
 
-import com.eclipsesource.schema.{SchemaType, Validator, _}
+import com.eclipsesource.schema.{SchemaType, SchemaValidator, _}
 import models.Post
-import play.api.data.mapping.Path
+import play.api.data.mapping.{VA, Path}
 import play.api.data.validation.ValidationError
 import play.api.libs.json.{JsError, JsValue, Json}
 import play.api.mvc.{Action, Controller}
 
-class Posts extends Controller {
 
-  //  (id: Long, title: String, body: String = "")
+// example based on 'Play for Scala' (http://www.manning.com/hilton/)
+class Posts extends Controller {
 
   def schema = Json.fromJson[SchemaType](Json.parse(
     """{
       |"properties": {
       |  "id":    { "type": "integer" },
-      |  "title": { "type": "string" },
+      |  "title": { "type": "string", "minLength": 3 },
       |  "body":  { "type": "string" }
       |}
-    }""".stripMargin)).get
+    |}""".stripMargin)).get
 
   def list = Action {
     val posts = Post.findAll
@@ -32,7 +32,8 @@ class Posts extends Controller {
   
   def save = Action(parse.json) { implicit request =>
     val json: JsValue = request.body
-    val result = Validator.validate(schema, json, Post.format)
+    println(Json.prettyPrint(json))
+    val result: VA[Post] = SchemaValidator.validate(schema, json, Post.reads)
     result.fold(
       valid = { post =>
         Post.save(post)

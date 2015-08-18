@@ -28,6 +28,10 @@
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
                 <button ng-if="editing" class="btn btn-success" ng-click="newPost()">New Post</button>
+
+                <div class="alert alert-danger" role="alert" ng-show="alert">
+                    <p>{{alert.data}}</p>
+                </div>
             </div>
         </div>
 

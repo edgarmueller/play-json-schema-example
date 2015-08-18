@@ -1,6 +1,6 @@
 package models
 
-import java.util.concurrent.atomic.{AtomicLong, AtomicInteger}
+import java.util.concurrent.atomic.AtomicLong
 
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
@@ -40,11 +40,11 @@ object Post {
     )
   }
 
-  implicit val postReads: Reads[Post] = (
+  implicit val reads: Reads[Post] = (
     (__ \ "id").readNullable[Long] and
       (__ \ "title").read[String] and
       (__ \ "body").readNullable[String]
-    ).tupled.map(read => Post(read._1.fold(nextId.getAndIncrement())(id => id), read._2, read._3.getOrElse("")))
+    ).tupled.map(read => Post(read._1.fold(nextId.getAndIncrement)(id => id), read._2, read._3.getOrElse("")))
 
   implicit object PostWrites extends Writes[Post] {
     def writes(post: Post) = Json.obj(
@@ -53,7 +53,4 @@ object Post {
       "body"  -> post.body
     )
   }
-
-  val format = Format(postReads, PostWrites)
-
 }
