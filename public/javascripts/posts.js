@@ -15,6 +15,7 @@ angular.module('app', ['ngResource', 'ngRoute'])
     .controller('MainCtrl', ['$scope', '$route', 'Post',
       function($scope, $route, Post) {
 
+        $scope.alerts = [];
         $scope.post = new Post();
         $scope.posts = Post.query();
 
@@ -29,11 +30,19 @@ angular.module('app', ['ngResource', 'ngRoute'])
         };
 
         $scope.save = function(post) {
+          $scope.alerts = [];
           if ($scope.post._id) {
             Post.update({_id: $scope.post._id}, $scope.post);
           } else {
-            $scope.post.$save().then(function(response) {
+            $scope.post.$save(function(response, headers) {
               $scope.posts.push(response)
+            }, function(error) {
+              for (var err in error.data) {
+                for (var e in error.data[err]) {
+                  var errMsg = error.data[err][e].msg;
+                  $scope.alerts.push(errMsg);
+                }
+              }
             });
           }
           $scope.editing = false;

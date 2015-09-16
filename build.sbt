@@ -15,7 +15,7 @@ libraryDependencies ++= Seq(
   "org.webjars" % "bootstrap" % "3.1.1-2",
   "org.webjars" % "angularjs" % "1.4.3",
   "org.webjars.bower" % "lodash" % "3.10.0",
-  "com.eclipsesource" %% "play-json-schema-validator" % "0.4"
+  "com.eclipsesource" %% "play-json-schema-validator" % "0.5.2"
 )
 
 resolvers += "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"

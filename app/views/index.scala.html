@@ -28,6 +28,7 @@
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
                 <button ng-if="editing" class="btn btn-success" ng-click="newPost()">New Post</button>
+                <div class="alert alert-danger" ng-model="alerts" ng-repeat="alert in alerts">{{alert}}</divalert>
             </div>
         </div>
 
