@@ -29,20 +29,33 @@ angular.module('app', ['ngResource', 'ngRoute'])
           $scope.editing = true;
         };
 
+        $scope.handleErrors = function(error) {
+          for (var err in error.data) {
+            for (var e in error.data[err]) {
+              var errMsg = error.data[err][e].msg + " at " + err;
+              $scope.alerts.push(errMsg);
+            }
+          }
+          $scope.posts = Post.query();
+        };
+
         $scope.save = function(post) {
           $scope.alerts = [];
-          if ($scope.post._id) {
-            Post.update({_id: $scope.post._id}, $scope.post);
+          if ($scope.post.id) {
+            Post.update({id: $scope.post.id}, $scope.post).$promise.then(
+              function(response) {
+                $scope.posts = Post.query();
+              },
+              function(errors) {
+                $scope.handleErrors(errors);
+            });
           } else {
             $scope.post.$save(function(response, headers) {
-              $scope.posts.push(response)
+              $scope.alert = undefined;
+              $scope.posts = Post.query();
             }, function(error) {
-              for (var err in error.data) {
-                for (var e in error.data[err]) {
-                  var errMsg = error.data[err][e].msg;
-                  $scope.alerts.push(errMsg);
-                }
-              }
+              $scope.handleErrors(error);
+
             });
           }
           $scope.editing = false;
@@ -53,6 +66,5 @@ angular.module('app', ['ngResource', 'ngRoute'])
           Post.delete(post);
           _.remove($scope.posts, post)
         }
-
       }
     ]);

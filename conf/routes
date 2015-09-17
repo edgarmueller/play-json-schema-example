@@ -5,7 +5,9 @@
 # Home page
 GET         /                     controllers.Application.index
 GET         /posts                controllers.Posts.list
+GET         /posts/:id            controllers.Posts.post(id: Long)
 POST        /posts                controllers.Posts.save
+PUT         /posts/:id            controllers.Posts.update(id: Long)
 DELETE      /posts/:id            controllers.Posts.delete(id: Long)
 GET         /webjars/*file        controllers.WebJarAssets.at(file)
 
