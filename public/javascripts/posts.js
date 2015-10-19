@@ -25,16 +25,18 @@ angular.module('app', ['ngResource', 'ngRoute'])
         };
 
         $scope.activePost = function(post) {
-          $scope.post = post;
-          $scope.editing = true;
+          if ($scope.editing) {
+            $scope.alerts.push("Please submit the post that is being edited.")
+          } else {
+            $scope.post = post;
+            $scope.editing = true;
+          }
         };
 
         $scope.handleErrors = function(error) {
-          for (var err in error.data) {
-            for (var e in error.data[err]) {
-              var errMsg = error.data[err][e].msg + " at " + err;
-              $scope.alerts.push(errMsg);
-            }
+          var errorData = error.data;
+          for (var msg in errorData.msgs) {
+              $scope.alerts.push(errorData.msgs[msg]);
           }
           $scope.posts = Post.query();
         };
@@ -47,6 +49,7 @@ angular.module('app', ['ngResource', 'ngRoute'])
                 $scope.posts = Post.query();
               },
               function(errors) {
+                console.log(JSON.stringify(errors));
                 $scope.handleErrors(errors);
             });
           } else {
@@ -54,8 +57,8 @@ angular.module('app', ['ngResource', 'ngRoute'])
               $scope.alert = undefined;
               $scope.posts = Post.query();
             }, function(error) {
+              console.log(JSON.stringify(errors));
               $scope.handleErrors(error);
-
             });
           }
           $scope.editing = false;

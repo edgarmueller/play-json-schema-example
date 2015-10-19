@@ -54,9 +54,7 @@ class Posts extends Controller {
   private def validate(json: JsValue): Result = {
     val result: VA[Post] = SchemaValidator.validate(schema, json, Post.reads)
     result.fold(
-      invalid = { errors: Seq[(Path, Seq[ValidationError])] =>
-        BadRequest(JsError.toJson(errors.toJsError))
-      },
+      invalid = { errors =>  BadRequest(errors.toJson) },
       valid = { post =>
         Post.save(post)
         Ok(Json.toJson(post))
