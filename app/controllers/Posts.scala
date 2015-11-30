@@ -44,7 +44,7 @@ class Posts extends Controller {
     validate(json)
   }
 
-  def update(id: Long) = Action(parse.json) { implicit request =>
+  def update(id: Long) = Action(parse.json) { request =>
     val json: JsValue = request.body
     Post.findById(id).fold(
       NotFound("Post not found")
